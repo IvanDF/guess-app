@@ -1,8 +1,8 @@
 import React from "react";
 import {
-  Button,
   Dimensions,
   Image,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
@@ -55,7 +55,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: Dimensions.get("window").width * 0.7,
-    height: Dimensions.get("window").width * 0.7,
+    height: Dimensions.get("window").width * 0.2,
     maxWidth: "80%",
     marginVertical: Dimensions.get("window").height / 30,
     overflow: "hidden",

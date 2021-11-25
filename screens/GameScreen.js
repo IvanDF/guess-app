@@ -19,6 +19,8 @@ const generateRandomBetween = (min, max, exclude) => {
 };
 
 const GameScreen = (props) => {
+  // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+
   const { userChoice, onGameOver } = props;
 
   const initialGuess = generateRandomBetween(1, 100, userChoice);
