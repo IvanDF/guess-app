@@ -1,76 +1,28 @@
-import AppLoading from "expo-app-loading";
-import * as Font from "expo-font";
-import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
-import Header from "./components/Header";
-import colors from "./constants/colors";
-import GameOverScreen from "./screens/GameOverScreen";
-import GameScreen from "./screens/GameScreen";
+import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet, ImageBackground } from "react-native";
 import StartGameScreen from "./screens/StartGameScreen";
 
-const fetchFonts = () => {
-  return Font.loadAsync({
-    "open-sans": require("./assets/fonts/OpenSans-Bold.ttf"),
-    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
-  });
-};
-
 export default function App() {
-  const [userNumber, setUserNumber] = useState(undefined);
-  const [guessRounds, setGuessRound] = useState(0);
-  const [dataLoaded, setDataLoaded] = useState(false);
-
-  if (!dataLoaded) {
-    return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setDataLoaded(true)}
-        onError={(err) => console.log(err)}
-      />
-    );
-  }
-
-  const configurerNewGameHandler = () => {
-    setGuessRound(0);
-    setUserNumber(null);
-  };
-
-  const startGameHandler = (selectedNumber) => {
-    setUserNumber(selectedNumber);
-    setGuessRound(0);
-  };
-
-  const gameOverHandler = (numOfRounds) => {
-    setGuessRound(numOfRounds);
-  };
-
-  let content = <StartGameScreen onStartGame={startGameHandler} />;
-
-  if (userNumber && guessRounds <= 0) {
-    content = (
-      <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
-    );
-  } else if (guessRounds > 0) {
-    content = (
-      <GameOverScreen
-        roundsNumber={guessRounds}
-        userNumber={userNumber}
-        onRestart={configurerNewGameHandler}
-      />
-    );
-  }
-
   return (
-    <SafeAreaView style={styles.screen}>
-      <Header title="Guess a number" />
-      {content}
-    </SafeAreaView>
+    <LinearGradient colors={["#4e0329", "#ddb53f"]} style={styles.rootScreen}>
+      <ImageBackground
+        source={require("./assets/images/background.png")}
+        resizeMode="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.backgroundImage}
+      >
+        <StartGameScreen />
+      </ImageBackground>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  rootScreen: {
     flex: 1,
-    backgroundColor: colors.lightBg,
+  },
+
+  backgroundImage: {
+    opacity: 0.25,
   },
 });

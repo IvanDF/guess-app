@@ -1,162 +1,89 @@
-import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Button,
-  Dimensions,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
-import BodyText from "../components/BodyText";
-import ButtonComponent from "../components/ButtonComponent";
-import Card from "../components/Card";
-import Input from "../components/Input";
-import NumberContainer from "../components/NumberContainer";
-import colors from "../constants/colors";
-import defaultStyles from "../constants/default-styles";
+import { TextInput, View, StyleSheet, Alert } from "react-native";
+import { useState } from "react";
+import PrimaryButton from "../components/PrimaryButton";
 
-const StartGameScreen = (props) => {
-  const [enteredValue, setEnteredValue] = useState("");
-  const [confirmed, setConfirmed] = useState(false);
-  const [selectedNumber, setSelectedNumber] = useState();
-  const [buttonWidth, setButtonWidth] = useState(
-    Dimensions.get("window").width / 4
-  );
+const StartGameScreen = () => {
+  const [enteredNumber, setEnteredNumber] = useState("");
 
-  useEffect(() => {
-    const updateLayout = () => {
-      setButtonWidth(Dimensions.get("window").width / 4);
-    };
-    Dimensions.addEventListener("change", updateLayout);
-    return () => {
-      Dimensions.removeEventListener("change", updateLayout);
-    };
-  }, []);
+  const enteredNumberHandelr = (enteredText) => setEnteredNumber(enteredText);
 
-  const numberInputHandler = (inputText) => {
-    setEnteredValue(inputText.replace(/[^0-9]/g, ""));
+  const resetInputHadnler = () => {
+    setEnteredNumber("");
   };
 
-  const confirmInputHanld = () => {
-    const chosenNumber = parseInt(enteredValue);
+  const confirmInputHandler = () => {
+    const chosenNumber = parseInt(enteredNumber);
+
     if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
       Alert.alert(
-        "Invalid number!",
-        "Number has yo be a number between 1 and 99",
-        [{ text: "Okay", style: "destructive", onPress: setEnteredValue("") }]
+        "Invalid Number!",
+        "Number has to be a number between 1 and 99",
+        [{ text: "Okay", style: "destructive", onPress: resetInputHadnler }]
       );
       return;
     }
-    setConfirmed(true);
-    setSelectedNumber(chosenNumber);
-    setEnteredValue("");
-    Keyboard.dismiss();
+
+    console.log("Valid number: ", enteredNumber);
   };
 
-  let confirmedOutput;
-
-  if (confirmed) {
-    confirmedOutput = (
-      <Card style={style.summaryContainer}>
-        <BodyText style={defaultStyles.bodyText}> You selected</BodyText>
-        <NumberContainer>{selectedNumber}</NumberContainer>
-        <ButtonComponent onPress={() => props.onStartGame(selectedNumber)}>
-          START GAME
-        </ButtonComponent>
-      </Card>
-    );
-  }
-
   return (
-    <ScrollView>
-      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={80}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            Keyboard.dismiss();
-          }}
-        >
-          <View style={style.screen}>
-            <BodyText style={style.title}> Start a new Game! </BodyText>
-            <Card style={style.intputContainer}>
-              <BodyText>Select a number</BodyText>
-              <Input
-                style={style.input}
-                blurOnSubmit
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="number-pad"
-                maxLength={2}
-                onChangeText={numberInputHandler}
-                value={enteredValue}
-              />
-              <View style={style.buttonContainer}>
-                <View style={{ width: buttonWidth }}>
-                  <Button
-                    title="Reset"
-                    onPress={() => {
-                      setEnteredValue(""), setConfirmed(false);
-                    }}
-                    color={colors.accent}
-                  />
-                </View>
-                <View style={{ width: buttonWidth }}>
-                  <Button
-                    title="Confirm"
-                    onPress={confirmInputHanld}
-                    color={colors.primary}
-                  />
-                </View>
-              </View>
-            </Card>
-            {confirmedOutput}
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </ScrollView>
+    <View style={styles.inputContainer}>
+      <TextInput
+        style={styles.numberInput}
+        maxLength={2}
+        keyboardType="number-pad"
+        value={enteredNumber}
+        onChange={enteredNumberHandelr}
+      />
+      <View style={styles.buttonsContainer}>
+        <View style={styles.button}>
+          <PrimaryButton onPress={resetInputHadnler}>Reset</PrimaryButton>
+        </View>
+        <View style={styles.button}>
+          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+        </View>
+      </View>
+    </View>
   );
 };
 
-const style = StyleSheet.create({
-  screen: {
-    flex: 1,
-    padding: 10,
+const styles = StyleSheet.create({
+  inputContainer: {
+    justifyContent: "center",
     alignItems: "center",
+    padding: 20,
+    marginTop: 100,
+    marginHorizontal: 30,
+    backgroundColor: "#3b021f",
+    borderRadius: 8,
+    // for android
+    elevation: 4,
+    // for ios
+    shadowColor: "#333",
+    shadowOffset: { width: 2, height: 4 },
+    shadowRadius: 3,
+    shadowOpacity: 0.5,
   },
 
-  title: {
-    color: "#333",
-    fontSize: 20,
-    marginVertical: 10,
-    fontFamily: "open-sans-bold",
-  },
-
-  intputContainer: {
-    width: "80%",
-    minWidth: 300,
-    maxWidth: "95%",
-    borderBottomLeftRadius: 30,
-  },
-
-  buttonContainer: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    paddingHorizontal: 15,
-  },
-
-  // button: {
-  //   width: Dimensions.get("window").width / 4,
-  // },
-
-  input: {
+  numberInput: {
+    height: 50,
     width: 50,
+    fontSize: 32,
+    fontWeight: "bold",
+    borderBottomWidth: 2,
+    borderBottomColor: "#ddb52f",
+    color: "#ddb52f",
+    marginVertical: 10,
     textAlign: "center",
   },
 
-  summaryContainer: { marginTop: 20, alignItems: "center" },
+  buttonsContainer: {
+    flexDirection: "row",
+  },
+
+  button: {
+    flex: 1,
+  },
 });
 
 export default StartGameScreen;

@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "proj-app",
-    "slug": "proj-app",
+    "name": "GuessApp",
+    "slug": "GuessApp",
     "version": "1.0.0",
-    "orientation": "default",
+    "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "backgroundColor": "#ffffff",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
