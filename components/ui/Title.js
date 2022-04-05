@@ -5,6 +5,7 @@ const Title = ({ children }) => <Text style={styles.title}>{children}</Text>;
 
 const styles = StyleSheet.create({
   title: {
+    maxWidth: "80%",
     fontFamily: "open-sans-bold",
     fontSize: 24,
     color: Colors.gray500,
