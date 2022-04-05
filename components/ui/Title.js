@@ -5,8 +5,8 @@ const Title = ({ children }) => <Text style={styles.title}>{children}</Text>;
 
 const styles = StyleSheet.create({
   title: {
+    fontFamily: "open-sans-bold",
     fontSize: 24,
-    fontWeight: "bold",
     color: Colors.gray500,
     textAlign: "center",
     borderWidth: 2,

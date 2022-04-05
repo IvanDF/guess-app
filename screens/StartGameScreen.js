@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Alert, StyleSheet, TextInput, View } from "react-native";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Title from "../components/ui/Title";
 import Colors from "../constants/Colors";
 
 const StartGameScreen = ({ onPickedNumber }) => {
@@ -28,42 +31,35 @@ const StartGameScreen = ({ onPickedNumber }) => {
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.numberInput}
-        maxLength={2}
-        keyboardType="number-pad"
-        value={enteredNumber}
-        onChangeText={enteredNumberHandelr}
-      />
-      <View style={styles.buttonsContainer}>
-        <View style={styles.button}>
-          <PrimaryButton onPress={resetInputHadnler}>Reset</PrimaryButton>
+    <View style={styles.screenContainer}>
+      <Title>Guess My number</Title>
+      <Card>
+        <InstructionText>Enter a number</InstructionText>
+        <TextInput
+          style={styles.numberInput}
+          maxLength={2}
+          keyboardType="number-pad"
+          value={enteredNumber}
+          onChangeText={enteredNumberHandelr}
+        />
+        <View style={styles.buttonsContainer}>
+          <View style={styles.button}>
+            <PrimaryButton onPress={resetInputHadnler}>Reset</PrimaryButton>
+          </View>
+          <View style={styles.button}>
+            <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+          </View>
         </View>
-        <View style={styles.button}>
-          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-        </View>
-      </View>
+      </Card>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    justifyContent: "center",
+  screenContainer: {
+    flex: 1,
+    marginTop: 150,
     alignItems: "center",
-    padding: 20,
-    marginTop: 100,
-    marginHorizontal: 30,
-    backgroundColor: Colors.primary800,
-    borderRadius: 8,
-    // for android
-    elevation: 4,
-    // for ios
-    shadowColor: "#333",
-    shadowOffset: { width: 2, height: 4 },
-    shadowRadius: 3,
-    shadowOpacity: 0.5,
   },
 
   numberInput: {
